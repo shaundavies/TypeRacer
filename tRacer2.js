@@ -24,6 +24,20 @@ window.addEventListener('load', function () {                                   
         }, 100);
     }
 
+    function prepTextColor() { // Take from wordTally
+        var wordLength = [];
+        for (var i = 0; i < wordTally - 1; i++) {                                           // Make wordTally zero based
+            wordLength[i] = document.getElementById('word' + (i + 1)).childElementCount;    // Word spans start at 1
+            console.log(wordLength[i])
+        }
+        return wordLength;
+    }
+
+    // // Text Color Change
+    // function textColor(currentLetter, wordLength) { // Take from prepText wordLength and global current letter
+        
+        
+    // }
 
     // GAME PREP -------------------------------------------------------------------
 
@@ -62,6 +76,7 @@ window.addEventListener('load', function () {                                   
     }
     wordSpanCreate();
 
+    var wordTally = 0;
     // Invoke the span elements for each letter
     function letterSpanCreate() {
         var count = 1;
@@ -73,8 +88,11 @@ window.addEventListener('load', function () {                                   
                 temp.setAttribute("id", 'L' + i);
                 temp.innerHTML = arrPhrase[i];
                 spanDump.appendChild(temp);
+
+                
             } else {
                 count++;
+                wordTally = count;
             }
         }
     }
@@ -98,6 +116,10 @@ window.addEventListener('load', function () {                                   
         timer();
     }
 
+    var WL = prepTextColor();
+    console.log(WL[2] + " a");
+
+    var WLt = 0;
     // On keyUp
     document.onkeyup = (e) => {
         // End game check
@@ -127,11 +149,22 @@ window.addEventListener('load', function () {                                   
                             // Underline Current Word and remove underline from previous word
                             document.getElementById("word" + curWord).style.textDecoration = 'underline';
                             document.getElementById("word" + (curWord - 1)).style.textDecoration = 'none';
+
+                            // Testing
+                            WLt = 0;
+                            WL[curWord - 1];
+                            console.log("math problem " + WL[curWord - 1])
+                            console.log("math problem " + curWord)
                         }
 
                         if (flag === false) {                                       // If flag is false we are still in an element needing style changes
                             // Change previous letter input text color
-                            document.getElementById("L" + (curLetter - 1)).style.color = 'LimeGreen';
+                            // document.getElementById("L" + (curLetter - 1)).style.color = 'LimeGreen';
+                            // document.getElementById("L" + (curLetter - 1)).style.color = "rgba(0,"+ (Math.min(128, 255 / (WL[curWord] / curLetter))) +",0,1)";
+                            WLt++;
+                            document.getElementById("L" + (curLetter - 1)).style.color = "rgba(0,"+ (255 * (WLt / WL[curWord - 1])) +",0,1)";
+                            // document.getElementById("typearea").style.color = "rgba(0,"+ (255 * (WLt / WL[curWord - 1])) +",0,1)";
+
                         } else { flag = false; }
                     }
                 }
