@@ -1,0 +1,78 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    position: absolute;
+    background-color: rgb(66, 66, 66);
+    padding: 0%;
+    margin: 0%;
+    width: 100%;
+    height: 100%;
+}
+
+.color {
+    position: absolute;
+    z-index: 1;
+    background-size: 1000px, 1000px;
+    background-color: rgb(66, 66, 66);
+    height: 100%;
+    width: 100%;
+}
+
+/* Transparency blocks whats beneath it. Color does not. Alpha is irrelevant */
+
+.mask {
+    mask: url("sar11.png");
+    -webkit-mask: url("sar11.png");
+    mask-size: 1125px;
+    mask-repeat: no-repeat;
+    -webkit-mask-position-x: 50%;
+    animation: frntimge2 6s linear infinite;
+}
+
+#text {
+    position: fixed;
+    background-image: url("./typeracerText.png");
+    z-index: 2;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    top: -290px;
+    background-repeat: no-repeat;
+}
+
+.a {
+    position: absolute;
+    width: 100%;
+    height: 1200px;
+    background-size: cover;
+    background: url('./backimage.png');
+    animation: backimge 5s linear infinite;
+}
+
+@keyframes backimge {
+    0% {
+        background-position: 0, 0;
+    }
+    100% {
+        background-position: -5760px, 0;
+    }
+}
+
+@keyframes frntimge2 {
+    0% {
+        -webkit-mask-position-y: 0px;
+        -webkit-mask-position-x: 50%;
+    }
+    50% {
+        -webkit-mask-position-y: 15px;
+        -webkit-mask-position-x: 50.25%;
+    }
+    100% {
+        -webkit-mask-position-y: 0px;
+        -webkit-mask-position-x: 50%;
+    }
+}

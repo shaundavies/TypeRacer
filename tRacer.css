@@ -2,6 +2,25 @@
     width: 500px;
 }
 
+.center {
+    margin: auto;
+    padding-top: 100px;
+    width: 700px;
+}
+#timer {
+    display: inline-block;
+}
+
+#slow{
+    display: inline-block;
+    margin-left: 400px;
+}
+
+#fast {
+    display: inline-block;
+    margin-left: 40px;
+}
+
 #correct {
     background-color: red;
 }
@@ -14,4 +33,10 @@
     -ms-user-select: none;
     -o-user-select: none;
     user-select: none;
+
+
+    background-color: ghostwhite;
+
+    font-size: 24px;
 }
+

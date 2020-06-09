@@ -1,27 +1,45 @@
 
 
-window.addEventListener('load', function () {                                           // Wait for page to be fully loaded
+window.addEventListener('load', function () {                                               // Wait for page to be fully loaded
 
     // Script performance run timer - Begin
     var t0 = performance.now()
 
+    var finalWPM1 = 0;
     // Timer
     function timer() {
         var seconds = 0;
         var milli = 0;
         var secondss = 0;
         var x = setInterval(function () {
-            if (endGame === false) {
+            if (endtimer === false) {
                 milli++;
                 seconds++;
                 secondss = Math.round(seconds / 10);
                 if (milli > 9) { milli = 0; }
                 document.getElementById("timer").innerHTML = "Time: " + secondss + "." + milli;
             } else {
-                let finalWPM = Math.round((curWord / secondss) * 60);                       // Formula to calculate the Words Per Minute type speed
-                document.getElementById("timer").innerHTML = "Final Time: " + finalWPM + " Words Per Minute";
+                finalWPM1 = Math.round((curWord / secondss) * 60);                       // Formula to calculate the Words Per Minute type speed
+                console.log("final wpm " + finalWPM1);
+                clearInterval(x);
+                timertoggle = true;
             }
         }, 100);
+    }
+
+    function timer2(finalWPM) {
+        var count = 0;
+        var time = document.getElementById("timer");
+        var x = setInterval(function () {
+            console.log("running still");
+            if (count <= finalWPM) {
+                count++;
+                console.log(count + " why are you running")
+                time.innerHTML = count;
+            } else {
+                time.innerHTML = "Final Time: " + finalWPM + " Words Per Minute";
+            }
+        }, 50);
     }
 
     function prepTextColor() { // Take from wordTally
@@ -83,7 +101,6 @@ window.addEventListener('load', function () {                                   
                 temp.innerHTML = arrPhrase[i];
                 spanDump.appendChild(temp);
 
-
             } else {
                 count++;
                 wordTally = count;
@@ -96,11 +113,13 @@ window.addEventListener('load', function () {                                   
     // GAME PLAY -------------------------------------------------------------------
 
     // KeyCode Function Global Variables
-    curLetter = 0;                                                                  // Current letter counter in String 
-    curWord = 1;                                                                    // Current word counter in String
-    wrongLetter = 0;                                                                // Counter for how many wrong letters have been pressed
-    beginGame = false;                                                              // If true the game has started and prevent reseting of values
-    endGame = false;                                                                // If true the game has ended and prevent code from running
+    var curLetter = 0;                                                                  // Current letter counter in String 
+    var curWord = 1;                                                                    // Current word counter in String
+    var wrongLetter = 0;                                                                // Counter for how many wrong letters have been pressed
+    var beginGame = false;                                                              // If true the game has started and prevent reseting of values
+    var endGame = false;                                                                // If true the game has ended and prevent code from running
+    var endtimer = false;
+    var timertoggle = false;
 
     // Element changes prior to game run
     function racePrep() {
@@ -111,6 +130,8 @@ window.addEventListener('load', function () {                                   
     }
     racePrep();
 
+
+
     var WL = prepTextColor();
     console.log(WL[2] + " a");
 
@@ -118,9 +139,8 @@ window.addEventListener('load', function () {                                   
     // On keyUp
     document.onkeyup = (e) => {
         // End game check
-        if (endGame === false) {                                            // Game is over prevent code from running
+        if (endGame === false) {                                                    // Game is over prevent code from running
             var x = document.forms["myForm"]["fname"].value;                        // Grab data from Form element
-
             if (e.keyCode > 64 || e.keyCode === 8 || e.keyCode === 32) {            // Prevent Shift caps lock and other characters from giving false negative
                 // Game Logic--(Correct Inputs) ---------
                 if (x[curLetter] === arrPhrase[curLetter]) {                        // User's input matches the character in string sequence
@@ -129,6 +149,8 @@ window.addEventListener('load', function () {                                   
                     // End of Game -----------
                     if (curLetter > arrPhrase.length - 1) {                         // The current letter counter is greater than the amount of characters in the typing string
                         endGame = true;                                             // ** Stop code from running
+                        endtimer = true;
+                        // timer2(timer);
                     }
                     // Game is not over
                     else {
@@ -186,15 +208,21 @@ window.addEventListener('load', function () {                                   
                 console.log("wrong Letter Count " + wrongLetter)
             }
         }
-
     }
 
     // On keyDown
     document.onkeydown = (e) => {                                                   // User can hold delete to remove incorrect text
         // Game Logic--(Removing Wrong Inputs) ---------
-        if (beginGame === false) {                                                  // Run timer only after a valid key press
-            timer();
-            beginGame = true
+        if (e.keyCode > 64 || e.keyCode === 8 || e.keyCode === 32) {
+            if (beginGame === false) {     // Run timer only after a valid key press
+                // timerStates();
+                timer();
+                beginGame = true                                                        // Run timer command once
+            }
+            console.log(finalWPM1 + " wordsget");
+            if (timertoggle === true) {
+                timer2(finalWPM1);
+            }
         }
         if (e.keyCode === 8 && wrongLetter != 0) {                                  // User's input is (Delete) and the wrong letter counter is greater than Zero
             wrongLetter--;                                                          // Every delete input decreases number
@@ -207,15 +235,11 @@ window.addEventListener('load', function () {                                   
         }
     }
 
-
     // Script performance run timer - End
     var t1 = performance.now()
     console.log('script to ' + (t1 - t0) + ' milliseconds to run');
 
 })
-
-
-
 
 
 
